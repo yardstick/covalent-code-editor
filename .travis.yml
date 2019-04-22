@@ -1,26 +1,34 @@
+language: node_js
 sudo: required
 dist: trusty
-language: node_js
+env:
+  global:
+   # The next declaration is the encrypted COVERITY_SCAN_TOKEN, created
+   #  via the "travis encrypt" command using the project repo's public key
+   - secure: "Tr2IWIQq+xfg64Q42wdW4s5xLP4wxcPOgbIOOQtgk/f4oXlXIvBV7fs9MRYGMpZW+xXufTRJg8djXmHzelhvUp52vep7KimV7NCSC52zmHTmp9imgmZ2MMGTFI1Nlnqc4tIgbyb1Klee4605QHfEdxzGmMGAMabt5vNoOdRR5te94iZOyfkczMvwL4UtSVj+cPMqnW+JzzDfkEGfkrbWBjcJd+lv7y7h9WCjiL9z8xdeaZnz9goeY1GVPYAqzaHFDgxkieBQVHKFaTyWTaICSwPi0mzxnJfiga7VUH0CaDlmnwhV3f6MhnWo3C7521K3+HzhrhjWguhtHhwRyhDrglodgbfoyjtdzaNHO7xQ4h7/tySG+Mi5Oeuzr+K0gYEBtN5QcRBjlowGtp9XFRdQwoo2sKLhneFgy15hXrOcHQWaVWbGCWb/AnC78Hrto059eYOuTua3xfZ/Qd3HMALcgK8UcvPeOrxX9E35WT2mb94AEMTkeGOkpzCMBJaX0w5fiVhE+zdKp2EIhEtyEOx9/gXyqcLrjfrqUiCvfus1y2XlafH8W//yNQahfYpYm3Qo3YyD66yormZU4mTq1ibFATwKdbK9XCum7Q1DvLuc8bg5d+LmelemUXLstA8lo80nVZu5nD5L3Lq9jjcVRBDahRfvBq/CuISov0TLC9Y6Wb0="
+before_install:
+   - echo -n | openssl s_client -connect scan.coverity.com:443 | sed -ne '/-BEGIN CERTIFICATE-/,/-END CERTIFICATE-/p' | sudo tee -a /etc/ssl/certs/ca-
+addons:
+  coverity_scan:
+    project:
+      name: "Teradata/covalent-code-editor"
+      description: "Text and code editing based on Covalent and Monaco Editor"
+    notification_email: jeremy.smartt@teradata.com
+    build_command_prepend: "npm run build"
+    build_command: "--no-command --fs-capture-search dist/"
+    branch_pattern: coverity_scan
 node_js:
-- '8.9.4'
+- '10.15.3'
 branches:
   only:
-    - master
-    - develop
-addons:
-  firefox: latest
-before_script:
-- export CHROME_BIN=chromium-browser
-- export DISPLAY=:99.0
-- sh -e /etc/init.d/xvfb start
+    - coverity_scan
+jobs:
+  include:
+    - env: "MODE=coverity"
 install:
 - npm install
-- npm i process-nextick-args util-deprecate buffer-shims
-- npm rebuild node-sass # Workaround for https://github.com/yarnpkg/yarn/issues/1981
 script:
-- npm run lint
-- npm run test
-after_script:
-- npm run coveralls
-after_success:
-- test $TRAVIS_PULL_REQUEST == "false" && test $TRAVIS_BRANCH == "develop"
+- ./scripts/ci/travis-script.sh
+cache:
+  directories:
+    - ./node_modules/
