@@ -4,7 +4,7 @@ dist: trusty
 env:
   global:
    # The next declaration is the encrypted COVERITY_SCAN_TOKEN, created via the "travis encrypt" command using the project repos public key
-   - secure: "OiwX40Ex/EiNhHEyk7X+CxqO1oKg/3Ct3A7jZ1/dRAU7wtkPltMXGFVcjC1fDgCKNbJWaq4GLRpTXHgz1Eoc+qed0cAOuIGf4PZepZTFRyHVPCkjvqTz/AsTIwvwAbROPKWobE2dcoTHFH40E0EpqNMQvuLcRg3M0+m1g3p8h4f7E0W6fU7rc1vAcsyb8yiLvu3/OX/5+TXjl6j88pKMHNo5RmKclXTQCC8r2WTyewilR1NpRNBc205eiqukO/sQ74803frwZTlY57fyogpAa7Ot4BS3eAAnjbGHD3Ov/6vZiaHAN1JyreD+rXbXpzxGaOxy/f4xLQHkv9Cq7wE5zFsQfvojV4ucmWQBV3wq0u6YG9z9fWWakzpC9XcU6slGnbj2Pt92+hzsyukIzclA+yNh32UsqQs/yx/dkxBrHFtKr8muPJju8CaQnUNg6GfDRkxjrW+iKi7VfImDfFHbfVu0CdgFjA8fnrJj7oP61GknhF7+/lXRnEu5YATGpVTIYkfW70ccr0/aqWUw5PCSQxlkEksxjAqgpC9WIXpPMSmAOJR+h5nNyKcubAwi+Jf2OGVFo/osW6FG4/chxPYSoq88IwSlgt40RLWL0M5SFv7NI/sV2CEF17OLQrZYRqtG0SlbOJdj7BX3U/LbNTkheJEXBDzIulviqjGzUUvRoPU="
+   - secure: "cIPlRy28fYtS85EGZt6pGz2HACmhH5hFPqM++Jo1rdxaDD0gtb8F7lsElYV5tg0+v41QUNFYonurzPf5BxPltfbhwdDrpwa2Acq2hbA7HXZXPUHdiZ7lMPMK0v/dYGAWxvA9Lsosrm77K2ukysB9gTXKqAA5Q1DD7N/gf4ACOEbbKxXgWp76/fMmqnhSJ/7yJxQm7HhMj0iI4lc4Uq3QKk8u1fDzbj3g8Xs06wz6iV4PcGVKkYi5VkTwuVl1CDCBKTvLbxsGgkTaDrt9ODmk/VBfHqKegLRx2ataAqpNL9sgzSAYUrJUrN0y1S8FU5F0AZA7JP4P2uv8BYnZCQ/qD/6vcH1rmmmLO4suReSdNf79xxacTMpa708n24KCOX0yaIFhDnIMqmGNPnrtgBFh++e86a9tNET2UxkZiEMw2tk+Hm/mXSGoZukndZ+i1c5tIUuhZLG7zSiZvhx+3L4fKhPMwoJZ3OTPk6+VxW0Oe9O/mnHlst8fvQ23rq6IrHzvMr//q+fma/Qp6CTmN1kySP1wxBbCaO51g8cUFNYKPMKh+IBuNRvtmqliEaLBJ5LpC0emCU9BXC19TXnJ2AnzuDmg2HqsWBCjaUEBKB2EdEuOIkF4Gl6IuGypzecc5mLpP6k9qLJxQ7iyqlk0wF8yyf0hdg409zeuTI4MPQiZjII="
 before_install:
   - echo -n | openssl s_client -connect scan.coverity.com:443 | sed -ne '/-BEGIN CERTIFICATE-/,/-END CERTIFICATE-/p' | sudo tee -a /etc/ssl/certs/ca-
 addons:
@@ -14,7 +14,7 @@ addons:
       description: "Text and code editing based on Covalent and Monaco Editor"
     notification_email: jeremy.smartt@teradata.com
     build_command_prepend: "npm run build"
-    build_command: "--no-command --fs-capture-search dist/"
+    build_command: "--no-command --fs-capture-search deploy/platform/code-editor/esm2015"
     branch_pattern: coverity_scan
 node_js:
 - '10.15.3'
