@@ -7,6 +7,25 @@ const noop: any = () => {
   // empty method
 };
 
+function isElectron() {
+  // Renderer process
+  if (typeof window !== 'undefined' && typeof window.process === 'object' && window.process.type === 'renderer') {
+      return true;
+  }
+
+  // Main process
+  if (typeof process !== 'undefined' && typeof process.versions === 'object' && !!process.versions.electron) {
+      return true;
+  }
+
+  // Detect the user agent when the `nodeIntegration` option is set to true
+  if (typeof navigator === 'object' && typeof navigator.userAgent === 'string' && navigator.userAgent.indexOf('Electron') >= 0) {
+      return true;
+  }
+
+  return false;
+}
+
 // counter for ids to allow for multiple editors on one page
 let uniqueCounter: number = 0;
 let loadedMonaco: boolean = false;
@@ -92,7 +111,7 @@ export class TdCodeEditorComponent implements OnInit, AfterViewInit, ControlValu
     // since accessing the window object need this check so serverside rendering doesn't fail
     if (typeof document === 'object' && !!document) {
         /* tslint:disable-next-line */
-        this._isElectronApp = ((<any>window)['process']) ? true : false;
+        this._isElectronApp = isElectron();
         if (this._isElectronApp) {
             this._appPath = electron.remote.app.getAppPath().split('\\').join('/');
         }
