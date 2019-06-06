@@ -8,8 +8,9 @@ const noop: any = () => {
 };
 
 function isElectron() {
+  const win = window as any;
   // Renderer process
-  if (typeof window !== 'undefined' && typeof window.process === 'object' && window.process.type === 'renderer') {
+  if (typeof win !== 'undefined' && typeof win.process === 'object' && win.process.type === 'renderer') {
       return true;
   }
 
